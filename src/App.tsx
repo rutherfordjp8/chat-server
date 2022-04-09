@@ -15,7 +15,10 @@ const MESSAGE_STYLES = {
 };
 
 const PORT = process.env.PORT || 3000;
-const WEBSOCKET_URL = `localhost:${PORT}`;
+const WEBSOCKET_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://rutherfordjp-chat-app.herokuapp.com/"
+    : `localhost:${PORT}`;
 
 type Message = {
   message: string;
@@ -33,6 +36,7 @@ function App() {
   const [room, setRoom] = useState("");
   const [currentRoom, setCurrentRoom] = useState("");
   // const [rooms, setRooms] = useState([]);
+  console.log("port", PORT);
 
   useEffect(() => {
     const getRooms = async () => {
