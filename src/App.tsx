@@ -6,7 +6,6 @@ import io, { Socket } from "socket.io-client";
 
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import axios from "axios";
-import logo from "./logo.svg";
 
 const MESSAGE_STYLES = {
   from: { alignSelf: "flex-end", bgcolor: "#1876d1" },
@@ -17,8 +16,13 @@ const MESSAGE_STYLES = {
 const PORT = process.env.PORT || 3000;
 const WEBSOCKET_URL =
   process.env.NODE_ENV === "production"
-    ? "https://rutherfordjp-chat-app.herokuapp.com/"
-    : `localhost:${PORT}`;
+    ? "https://rutherfordjp-chat-app.herokuapp.com"
+    : `http://localhost:${PORT}`;
+
+const API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://rutherfordjp-chat-app.herokuapp.com"
+    : `http://localhost:3000`;
 
 type Message = {
   message: string;
@@ -35,17 +39,15 @@ function App() {
   const [message, setMessage] = useState("");
   const [room, setRoom] = useState("");
   const [currentRoom, setCurrentRoom] = useState("");
-  // const [rooms, setRooms] = useState([]);
-  console.log("port", PORT);
+  const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
     const getRooms = async () => {
-      const allRooms = await axios.get("/rooms");
-      console.log(allRooms);
-      // setRooms(allRooms);
-    };
+      const { data } = await axios.get(`${API_URL}/rooms`);
 
-    // getRooms();
+      setRooms(data);
+    };
+    getRooms();
 
     if (!ws) {
       const socket = io(WEBSOCKET_URL);
@@ -68,13 +70,9 @@ function App() {
 
   const sendMessage = () => {
     if (ws) {
-      console.log("sending message");
       const newMessage: Message = { message, from: ws.id, type: "from" };
 
       ws.emit("message", newMessage, currentRoom);
-      // messages.push({ message: message, from: ws.id });
-      // messages.push(newMessage);
-      // setMessages(messages);
       setMessages([...messages, newMessage]);
     } else {
       alert("Not connected to websocket");
@@ -87,8 +85,6 @@ function App() {
       setCurrentRoom(room);
     }
   };
-
-  // console.log("messages;", messages);
 
   return (
     <div className="App">
@@ -155,7 +151,7 @@ function App() {
               fullWidth
               label="Message"
               variant={"filled"}
-              defaultValue="Message"
+              placeholder="Message"
             />
             <Button
               sx={{ width: "30%" }}
@@ -185,7 +181,7 @@ function App() {
             label="room"
             fullWidth
             variant={"filled"}
-            defaultValue="Message"
+            placeholder="Message"
           />
           <Button
             sx={{ width: "70%" }}
