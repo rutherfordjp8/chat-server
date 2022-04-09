@@ -48,13 +48,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (message, room = "") => {
-    console.log(message, room);
     if (!room) socket.broadcast.emit("receive-message", message);
     else socket.to(room).emit("receive-message", message);
   });
 
-  socket.on("join-room", (room) => {
-    socket.join(room);
+  socket.on("join-room", async (room) => {
+    await socket.join(room);
+    socket.emit("joined-room", `You joined room ${room}`);
     socket.to(room).emit("joined-room", `${socket.id} joined room ${room}`);
   });
 });

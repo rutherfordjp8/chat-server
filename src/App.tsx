@@ -95,31 +95,30 @@ function App() {
             flexDirection: "column",
             borderRadius: ".5em",
             overflow: "hidden",
-            height: "50vh",
+            height: "80vh",
             minHeight: "20em",
-            width: "70%",
+            width: "90%",
             marginTop: "4em",
             color: "white",
           }}
         >
+          <Box sx={{ bgcolor: "green" }}>
+            <Typography variant="h5">
+              {currentRoom === "" ? "Default" : currentRoom} Room
+            </Typography>
+          </Box>
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
-              bgcolor: "black",
+              bgcolor: "white",
               height: "100%",
-              overflowY: "scroll",
+              overflowY: "auto",
               padding: "1em",
               color: "white",
               textAlign: "left",
             }}
           >
-            {/* <img
-              style={{ position: "relative" }}
-              src={logo}
-              className="App-logo"
-              alt="logo"
-            /> */}
             {messages.map(({ message, from, type }: Message) => {
               return (
                 <Typography
