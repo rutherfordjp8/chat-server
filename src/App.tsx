@@ -14,6 +14,9 @@ const MESSAGE_STYLES = {
   JOINED_ROOM: { alignSelf: "center", textAlign: "center", bgcolor: "blue" },
 };
 
+const PORT = process.env.PORT || 3000;
+const WEBSOCKET_URL = `localhost:${PORT}`;
+
 type Message = {
   message: string;
   from?: string;
@@ -38,10 +41,10 @@ function App() {
       // setRooms(allRooms);
     };
 
-    getRooms();
+    // getRooms();
 
     if (!ws) {
-      const socket = io("localhost:3000");
+      const socket = io(WEBSOCKET_URL);
       setWS(socket);
     } else {
       ws.removeAllListeners();
