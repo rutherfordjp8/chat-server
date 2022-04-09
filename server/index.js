@@ -7,6 +7,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "http://localhost:3001" } }); // dev port is 3001 in package.json script
 
+const PORT = process.env.PORT || 3000;
+
 console.log("CURENT ENV", process.env.NODE_ENV, "port", process.env.PORT);
 app.use(express.static(path.join(__dirname, "../build")));
 
@@ -41,6 +43,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
+server.listen(PORT, () => {
   console.log("listening on http://localhost:3000");
 });
