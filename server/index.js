@@ -11,7 +11,7 @@ const app = express();
 const server = createServer(app);
 const __dirname = resolve();
 
-app.use(cors({ origin: "http://localhost:3001" }));
+app.use(cors({ origin: "http://localhost:3001" })); // For dev (running node and react scripts on different ports)
 
 app.use(express.static(join(__dirname, "./build")));
 app.get("/", function (req, res) {
